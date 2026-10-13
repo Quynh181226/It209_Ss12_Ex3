@@ -1,0 +1,48 @@
+name: Multi-Environment CD (Staging & Production)
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+
+jobs:
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    environment:
+      name: staging
+      url: https://api.staging.example.com
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Deploy application to Staging
+        run: |
+          echo "🚀 Starting deployment to STAGING environment..."
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit SHA: ${{ github.sha }}"
+          echo "Target URL: https://api.staging.example.com"
+          echo "✅ Successfully deployed to Staging!"
+
+  deploy-prod:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: production
+      url: https://api.prod.example.com
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Deploy application to Production
+        run: |
+          echo "🚀 Starting deployment to PRODUCTION environment..."
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit SHA: ${{ github.sha }}"
+          echo "Target URL: https://api.prod.example.com"
+          echo "✅ Successfully deployed to Production!"
